@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>บทสนทนาภาษามลายูในชีวิตประจำวัน: กิจกรรมฝึกทักษะ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1D2B4F; --ink-soft:#4A5878; --paper:#FFFFFF; --page:#E4ECF4;
+  --hero:#F2C230; --hero-ink:#231C05; --stamp:#C8372D; --ok:#2E7D5B;
+  --line:#C6D3E1; --chip:#F3F7FB;
+  --display:"Chakra Petch","IBM Plex Sans Thai",system-ui,sans-serif;
+  --body:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#E6ECF7; --ink-soft:#A9B6CE; --paper:#1A2438; --page:#111A2B;
+    --stamp:#F0776C; --ok:#5CC495; --line:#2F3D57; --chip:#223049;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E6ECF7; --ink-soft:#A9B6CE; --paper:#1A2438; --page:#111A2B;
+  --stamp:#F0776C; --ok:#5CC495; --line:#2F3D57; --chip:#223049;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65}
+.wrap{max-width:780px;margin:0 auto;padding:22px 18px 64px}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--hero);outline-offset:2px}
+
+/* Scenario switcher */
+.scenes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.scenes button{border:1.5px solid var(--line);background:var(--paper);border-radius:12px;padding:8px 10px;text-align:left;line-height:1.3}
+.scenes button .e{font-size:22px;display:block}
+.scenes button b{font-family:var(--display);font-size:15px;display:block}
+.scenes button small{color:var(--ink-soft);font-size:13px}
+.scenes button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1fr auto;background:var(--hero);color:var(--hero-ink);border-radius:14px;overflow:hidden;margin-bottom:24px;transition:background .3s}
+.hero-main{padding:22px 24px}
+.hero-stub{position:relative;padding:22px 20px;border-left:3px dashed rgba(0,0,0,.35);display:flex;flex-direction:column;justify-content:center;text-align:center;min-width:120px}
+.hero-stub::before,.hero-stub::after{content:"";position:absolute;left:-14.5px;width:26px;height:26px;border-radius:50%;background:var(--page)}
+.hero-stub::before{top:-13px}.hero-stub::after{bottom:-13px}
+.hero small{display:block;font-size:14px;opacity:.8}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(32px,7.5vw,52px);line-height:1.05;margin:4px 0 10px}
+.route{font-family:var(--display);font-size:19px;font-weight:500}
+.hero-stub b{font-family:var(--display);font-size:30px;line-height:1.1}
+
+/* Steps nav */
+nav.steps{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px}
+nav.steps button{flex:0 0 auto;border:1.5px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 14px;font-size:15px;white-space:nowrap}
+nav.steps button[aria-selected="true"]{background:var(--ink);color:var(--page);border-color:var(--ink)}
+nav.steps button .n{font-family:var(--display);font-weight:700;margin-right:6px}
+
+section.panel{display:none;background:var(--paper);border-radius:14px;padding:22px 20px;border:1px solid var(--line)}
+section.panel.on{display:block}
+h2{font-family:var(--display);font-size:24px;margin:0 0 4px;line-height:1.25}
+.hint{color:var(--ink-soft);margin:0 0 18px;font-size:15.5px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{border:0;border-radius:10px;padding:9px 18px;background:var(--ink);color:var(--page);font-weight:600}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.result{margin-top:14px;font-weight:600;min-height:1.6em}
+.good{color:var(--ok)} .bad{color:var(--stamp)}
+
+/* Dialogue */
+.line{display:grid;grid-template-columns:122px 1fr auto;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);align-items:start}
+.line:last-child{border-bottom:0}
+.line.stage{display:block;color:var(--ink-soft);font-style:italic;text-align:center}
+.who{font-family:var(--display);font-weight:700;font-size:15px;padding-top:2px}
+.who.staff{color:var(--stamp)}
+.th{display:none;color:var(--ink-soft);font-size:15.5px}
+.show-th .th{display:block}
+.say{border:1.5px solid var(--line);background:var(--chip);border-radius:8px;padding:2px 10px;font-size:14px}
+.note{background:var(--chip);border-radius:10px;padding:12px 14px;margin-top:16px;font-size:15.5px}
+.note p{margin:0 0 6px}.note p:last-child{margin:0}
+mark{background:var(--hero);color:var(--hero-ink);padding:0 3px;border-radius:3px}
+
+/* Match */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.col{display:flex;flex-direction:column;gap:8px}
+.card{border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:9px 12px;text-align:left}
+.card.ms{font-family:var(--display);font-weight:500;font-size:18px}
+.card.sel{border-color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.card.done{background:var(--chip);border-color:var(--ok);color:var(--ok);cursor:default}
+.card.wrong{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+/* Cloze */
+.cloze p{margin:0 0 10px}
+.cloze select{border:1.5px solid var(--line);border-radius:8px;padding:2px 6px;background:var(--chip);margin:0 2px;max-width:100%}
+.cloze select.ok{border-color:var(--ok);color:var(--ok)} .cloze select.no{border-color:var(--stamp);color:var(--stamp)}
+
+/* Order */
+ol.order{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+ol.order li{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px}
+ol.order li .i{font-family:var(--display);font-weight:700;color:var(--ink-soft)}
+ol.order li.ok{border-color:var(--ok)} ol.order li.no{border-color:var(--stamp)}
+.mv{display:flex;gap:4px}.mv button{border:1.5px solid var(--line);background:var(--chip);border-radius:6px;width:34px;height:30px}
+.mv button:disabled{opacity:.35;cursor:default}
+
+/* Quiz */
+.q{margin-bottom:18px}
+.q p{margin:0 0 6px;font-weight:600}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:6px}
+.opts button{border:1.5px solid var(--line);background:var(--paper);border-radius:8px;padding:7px 10px;text-align:left}
+.opts button.ok{border-color:var(--ok);background:var(--chip);color:var(--ok);font-weight:600}
+.opts button.no{border-color:var(--stamp);color:var(--stamp)}
+
+/* Role-play */
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.form label{display:flex;flex-direction:column;font-size:15px;color:var(--ink-soft);gap:4px}
+.form select{border:1.5px solid var(--line);border-radius:8px;padding:8px;background:var(--chip);color:var(--ink)}
+.mini{display:grid;grid-template-columns:1fr auto;background:var(--hero);color:var(--hero-ink);border-radius:12px;margin:14px 0;font-size:15px}
+.mini > div{padding:12px 16px}
+.mini .s{border-left:2px dashed rgba(0,0,0,.35);text-align:center;font-family:var(--display);display:flex;flex-direction:column;justify-content:center}
+.mini .s b{font-size:24px;display:block}
+.mini dl{display:grid;grid-template-columns:auto 1fr;gap:0 12px;margin:0}
+.mini dt{opacity:.75}.mini dd{margin:0;font-weight:600}
+.script .line{grid-template-columns:122px 1fr}
+
+/* Student + summary */
+.student{display:grid;grid-template-columns:1.6fr 1fr 1.4fr;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+.student label{display:flex;flex-direction:column;font-size:14px;color:var(--ink-soft);gap:4px}
+.student input{border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--chip);color:var(--ink)}
+.scenes .prog{display:block;font-size:12px;color:var(--ink-soft);margin-top:3px}
+.scenes .prog.full{color:var(--ok);font-weight:600}
+.summary{margin-top:24px;background:var(--paper);border:2px solid var(--ink);border-radius:14px;padding:22px 20px}
+.who-box{display:grid;grid-template-columns:auto 1fr;gap:2px 14px;margin:0 0 14px;font-size:16px}
+.who-box dt{color:var(--ink-soft)}.who-box dd{margin:0;font-weight:600}
+.warn{color:var(--stamp);font-weight:600}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15.5px;min-width:540px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:center}
+th:first-child,td:first-child{text-align:left}
+thead th{font-family:var(--display);font-size:14px;color:var(--ink-soft);font-weight:500}
+tfoot td{font-weight:700;border-bottom:0;border-top:2px solid var(--ink)}
+td.none{color:var(--ink-soft)}
+td.full{color:var(--ok);font-weight:600}
+.total{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:baseline;margin:18px 0}
+.total b{font-family:var(--display);font-size:42px;line-height:1}
+.total span{color:var(--ink-soft)}
+.total .lvl{font-family:var(--display);font-size:20px;font-weight:700;color:var(--ink)}
+#copyBox{width:100%;min-height:180px;margin-top:10px;border:1.5px solid var(--line);border-radius:8px;background:var(--chip);color:var(--ink);font:inherit;font-size:14px;padding:8px}
+@media print{.student,.scenes,.hero,nav.steps,.panel,.summary .row,.summary .hint,#sumMsg,#copyBox{display:none!important}.summary{border:0;margin:0}body{background:#fff;color:#000}}
+@media (max-width:620px){.scenes{grid-template-columns:1fr 1fr}}
+@media (max-width:680px){.student{grid-template-columns:1fr 1fr}.student label:first-child{grid-column:1/-1}}
+@media (max-width:520px){.student{grid-template-columns:1fr}}
+@media (max-width:520px){
+  .line{grid-template-columns:1fr auto}.line .who{grid-column:1/-1}
+  .script .line{grid-template-columns:1fr}
+  .match{gap:6px}.card{padding:8px}.card.ms{font-size:16px}
+  .hero-stub{min-width:96px;padding:16px 10px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="student">
+  <label>ชื่อ–สกุลผู้เรียน<input id="sName" autocomplete="name" placeholder="พิมพ์ชื่อ–สกุล"></label>
+  <label>รหัสนักศึกษา<input id="sId" inputmode="numeric" autocomplete="off" placeholder="พิมพ์รหัสนักศึกษา"></label>
+  <label>สาขาวิชา<input id="sMajor" autocomplete="off" placeholder="พิมพ์สาขาวิชา"></label>
+</div>
+
+<div class="scenes" id="scenes" aria-label="เลือกสถานการณ์"></div>
+
+<header class="hero">
+  <div class="hero-main">
+    <small id="hSub"></small>
+    <h1 id="hTitle"></h1>
+    <div class="route" id="hRoute"></div>
+  </div>
+  <div class="hero-stub"><small id="hS1"></small><b id="hS2"></b><small id="hS3"></small></div>
+</header>
+
+<nav class="steps" role="tablist" id="steps"></nav>
+
+<section class="panel on" id="p1">
+  <h2>อ่านและฟังบทสนทนา</h2>
+  <p class="hint">อ่านออกเสียงตามทีละบรรทัด กด “ฟัง” เพื่อฟังการออกเสียง แล้วเปิดคำแปลเพื่อตรวจความเข้าใจ</p>
+  <div class="row" style="margin-bottom:10px">
+    <button class="btn ghost" id="toggleTh">แสดงคำแปล</button>
+    <button class="btn ghost" id="playAll">ฟังทั้งบท</button>
+  </div>
+  <div id="dialogue"></div>
+  <div class="note" id="note1"></div>
+</section>
+
+<section class="panel" id="p2">
+  <h2>จับคู่คำศัพท์</h2>
+  <p class="hint">แตะคำภาษามลายูทางซ้าย แล้วแตะความหมายภาษาไทยที่ถูกต้องทางขวา</p>
+  <div class="match"><div class="col" id="mL"></div><div class="col" id="mR"></div></div>
+  <div class="result" id="mRes"></div>
+  <button class="btn ghost" id="mReset">เริ่มใหม่</button>
+</section>
+
+<section class="panel" id="p3">
+  <h2>เติมคำในบทสนทนา</h2>
+  <p class="hint">เลือกคำที่เหมาะสมเติมในช่องว่าง (มีคำหลอกปนอยู่) แล้วกด “ตรวจคำตอบ”</p>
+  <div class="cloze" id="cloze"></div>
+  <div class="row"><button class="btn" id="cCheck">ตรวจคำตอบ</button><button class="btn ghost" id="cReset">ล้างคำตอบ</button></div>
+  <div class="result" id="cRes"></div>
+</section>
+
+<section class="panel" id="p4">
+  <h2>เรียงลำดับบทสนทนา</h2>
+  <p class="hint">ใช้ปุ่มขึ้น–ลงเพื่อเรียงประโยคให้เป็นบทสนทนาที่ถูกต้อง</p>
+  <ol class="order" id="order"></ol>
+  <div class="row" style="margin-top:12px"><button class="btn" id="oCheck">ตรวจลำดับ</button><button class="btn ghost" id="oShuffle">สลับใหม่</button></div>
+  <div class="result" id="oRes"></div>
+</section>
+
+<section class="panel" id="p5">
+  <h2>ตอบคำถามจากบทสนทนา</h2>
+  <p class="hint">อ่านคำถาม แล้วเลือกคำตอบที่ถูกต้อง</p>
+  <div id="quiz"></div>
+  <div class="result" id="qRes"></div>
+  <button class="btn ghost" id="qReset">ทำใหม่</button>
+</section>
+
+<section class="panel" id="p6">
+  <h2>บทบาทสมมติ: สถานการณ์ของคุณเอง</h2>
+  <p class="hint" id="rpHint"></p>
+  <div class="form" id="form"></div>
+  <div class="mini" id="mini"></div>
+  <div class="script" id="script"></div>
+  <div class="note" id="note6"></div>
+</section>
+
+<section class="summary" id="summary">
+  <h2>สรุปผลคะแนน</h2>
+  <p class="hint">ระบบบันทึกคะแนนอัตโนมัติจากกิจกรรมที่ 2–5 ของทั้งสี่สถานการณ์ (กิจกรรมที่ 1 และ 6 เป็นการฝึกอ่านและพูด ไม่คิดคะแนน) หากทำกิจกรรมซ้ำ ระบบจะเก็บคะแนนครั้งล่าสุด ส่วนการจับคู่คำศัพท์นับเฉพาะคู่ที่ถูกตั้งแต่ครั้งแรก</p>
+  <dl class="who-box" id="sumWho"></dl>
+  <div class="tbl"><table><thead><tr><th>สถานการณ์</th><th>คำศัพท์</th><th>เติมคำ</th><th>เรียงลำดับ</th><th>คำถาม</th><th>รวม</th></tr></thead><tbody id="sumBody"></tbody><tfoot id="sumFoot"></tfoot></table></div>
+  <div class="total" id="sumTotal"></div>
+  <div class="row"><button class="btn" id="copyRes">คัดลอกผลคะแนน</button><button class="btn ghost" id="printRes">พิมพ์ / บันทึกเป็น PDF</button><button class="btn ghost" id="clearRes">ล้างคะแนนทั้งหมด</button></div>
+  <div class="result" id="sumMsg"></div>
+  <textarea id="copyBox" hidden readonly aria-label="ผลคะแนนสำหรับคัดลอก"></textarea>
+</section>
+
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const cap=s=>s[0].toUpperCase()+s.slice(1);
+const NUM=["","satu","dua","tiga","empat","lima"];
+const DAYS=["Isnin","Selasa","Rabu","Khamis","Jumaat","Sabtu","Ahad"];
+const range=n=>[...Array(n)].map((_,i)=>[String(i+1),`${i+1} (${NUM[i+1]})`]);
+const simple=a=>a.map(x=>[x,x]);
+
+const SC={
+tiket:{emoji:"🎫",name:"Tempahan Tiket",th:"การจองตั๋ว",hero:"#F2C230",
+ route:"Kaunter tiket, ke Kuala Lumpur",stub:["Harga","RM50","seorang"],staff:"Pegawai",
+ lines:[
+ ["Pelanggan","Selamat pagi. Saya ingin menempah tiket ke Kuala Lumpur.","สวัสดีตอนเช้า ฉันต้องการจองตั๋วไปกัวลาลัมเปอร์"],
+ ["Pegawai","Selamat pagi. Bila kamu mahu bertolak?","สวัสดีตอนเช้า คุณต้องการออกเดินทางเมื่อไร"],
+ ["Pelanggan","Hari Sabtu pagi.","วันเสาร์ตอนเช้า"],
+ ["Pegawai","Kamu mahu tiket sehala atau pergi balik?","คุณต้องการตั๋วเที่ยวเดียวหรือไป-กลับ"],
+ ["Pelanggan","Saya mahu tiket pergi balik.","ฉันต้องการตั๋วไป-กลับ"],
+ ["Pegawai","Baik. Berapa orang?","ได้ครับ กี่ท่าน"],
+ ["Pelanggan","Dua orang.","สองคน"],
+ ["Pegawai","Harga tiket RM50 seorang.","ราคาตั๋วคนละ 50 ริงกิต"],
+ ["Pelanggan","Baik. Saya mahu dua tiket. Terima kasih.","ตกลง ฉันเอาตั๋วสองใบ ขอบคุณ"],
+ ["Pegawai","Sama-sama.","ด้วยความยินดี"]],
+ note:`<p><b>สังเกต:</b> บทสนทนาใช้ <mark>bertolak</mark> (ออกเดินทาง) ซึ่งใช้กับการเดินทางทั่วไป ส่วน <mark>berlepas</mark> ในรายการคำศัพท์มักใช้กับเที่ยวบิน รถไฟ หรือรถโดยสารที่ออกตามตาราง</p><p><mark>destinasi</mark> (จุดหมายปลายทาง) ไม่ปรากฏในบทสนทนา แต่ผู้เรียนจะได้ใช้ในกิจกรรมที่ 6</p>`,
+ vocab:[["tiket","ตั๋ว"],["tempah","จอง"],["destinasi","จุดหมายปลายทาง"],["berlepas","ออกเดินทาง (ตามตาราง)"],["harga","ราคา"],["sehala","เที่ยวเดียว"],["pergi balik","ไป-กลับ"]],
+ cloze:["Pelanggan: Selamat pagi. Saya ingin [menempah] tiket ke Kuala Lumpur.","Pegawai: Selamat pagi. Bila kamu mahu [bertolak]?","Pegawai: Kamu mahu tiket [sehala] atau pergi balik?","Pelanggan: Saya mahu tiket [pergi balik].","Pegawai: Baik. [Berapa] orang?","Pelanggan: [Dua] orang.","Pegawai: [Harga] tiket RM50 seorang."],
+ extra:["bilik","tambang"],
+ quiz:[
+ ["Ke manakah pelanggan mahu pergi?",["Kuala Lumpur","Pulau Pinang","Melaka","Johor Bahru"],0],
+ ["Bilakah pelanggan mahu bertolak?",["Hari Sabtu petang","Hari Sabtu pagi","Hari Ahad pagi","Hari Jumaat malam"],1],
+ ["Apakah jenis tiket yang pelanggan mahu?",["Tiket sehala","Tiket pergi balik","Tiket kapal terbang","Tiket percuma"],1],
+ ["Berapa orang yang akan pergi?",["Seorang","Dua orang","Tiga orang","Empat orang"],1],
+ ["Berapakah jumlah harga untuk semua tiket?",["RM50","RM100","RM150","RM200"],1]],
+ rpHint:"เลือกรายละเอียดการเดินทาง ระบบจะสร้างตั๋วและบทสนทนาใหม่ให้จับคู่ฝึกบทบาทสมมติ (Pelanggan – Pegawai) แล้วสลับบทกัน",
+ rpNote:"<b>ภารกิจท้าทาย:</b> ให้ผู้เรียนคำนวณราคารวมเองก่อนดูตั๋ว แล้วพูดประโยค “Jumlahnya RM… .” ให้ถูกต้อง",
+ fields:[
+  ["dest","Destinasi (จุดหมายปลายทาง)",simple(["Kuala Lumpur","Pulau Pinang","Ipoh","Melaka","Johor Bahru"]),"Pulau Pinang"],
+  ["day","Hari (วัน)",simple(DAYS),"Ahad"],
+  ["time","Masa (ช่วงเวลา)",simple(["pagi","tengah hari","petang","malam"]),"petang"],
+  ["type","Jenis tiket (ประเภทตั๋ว)",simple(["sehala","pergi balik"]),"sehala"],
+  ["num","Bilangan orang (จำนวนคน)",range(5),"3"]],
+ build(v){const P={"Kuala Lumpur":50,"Pulau Pinang":35,"Ipoh":40,"Melaka":60,"Johor Bahru":75};
+  const n=+v.num,per=P[v.dest]*(v.type==="pergi balik"?2:1),tot=per*n;
+  return{rows:[["Destinasi",v.dest],["Berlepas",`Hari ${v.day} ${v.time}`],["Jenis",v.type],["Penumpang",`${n} orang × RM${per}`]],tl:"Jumlah",tot,
+  lines:[["Pelanggan",`Selamat ${v.time}. Saya ingin menempah tiket.`],["Pegawai",`Selamat ${v.time}. Apakah destinasi kamu?`],["Pelanggan",`Destinasi saya ${v.dest}.`],["Pegawai","Bila kamu mahu berlepas?"],["Pelanggan",`Hari ${v.day} ${v.time}.`],["Pegawai","Kamu mahu tiket sehala atau pergi balik?"],["Pelanggan",`Saya mahu tiket ${v.type}.`],["Pegawai","Baik. Berapa orang?"],["Pelanggan",n===1?"Seorang.":`${cap(NUM[n])} orang.`],["Pegawai",`Harga tiket ${v.type} RM${per} seorang. Jumlahnya RM${tot}.`],["Pelanggan",`Baik. Saya mahu ${n===1?"satu tiket":NUM[n]+" tiket"}. Terima kasih.`],["Pegawai","Sama-sama. Selamat jalan!"]]}}
+},
+
+hotel:{emoji:"🏨",name:"Tempahan Hotel",th:"การจองโรงแรม",hero:"#A9CBEA",
+ route:"Kaunter hotel, dua malam",stub:["Harga","RM150","semalam"],staff:"Pekerja Hotel",
+ lines:[
+ ["Tetamu","Selamat petang. Saya ingin menempah bilik.","สวัสดีตอนบ่าย ฉันต้องการจองห้องพัก"],
+ ["Pekerja Hotel","Selamat petang. Untuk berapa malam?","สวัสดีตอนบ่าย พักกี่คืนคะ"],
+ ["Tetamu","Untuk dua malam.","สองคืน"],
+ ["Pekerja Hotel","Kamu mahu bilik single atau bilik berkembar?","คุณต้องการห้องเดี่ยวหรือห้องเตียงแฝด (สองเตียง)"],
+ ["Tetamu","Saya mahu bilik berkembar.","ฉันต้องการห้องเตียงแฝด"],
+ ["Pekerja Hotel","Baik. Ada bilik kosong. Harganya RM150 semalam.","ได้ค่ะ มีห้องว่าง ราคาคืนละ 150 ริงกิต"],
+ ["Tetamu","Adakah sarapan termasuk?","รวมอาหารเช้าด้วยไหม"],
+ ["Pekerja Hotel","Ya, sarapan termasuk.","ค่ะ รวมอาหารเช้าด้วย"],
+ ["Tetamu","Baik. Saya mahu tempah bilik itu.","ตกลง ฉันจองห้องนั้น"],
+ ["Pekerja Hotel","Baik. Selamat menginap.","ได้ค่ะ ขอให้พักอย่างมีความสุข"]],
+ note:`<p><b>สังเกต:</b> <mark>bilik berkembar</mark> คือห้องที่มีเตียงเดี่ยวสองเตียง (twin) ต่างจาก <mark>bilik kelamin</mark> ที่มีเตียงใหญ่หนึ่งเตียง ส่วนคำว่า single เป็นคำยืมภาษาอังกฤษที่ใช้กันทั่วไปในโรงแรม คำมลายูคือ <mark>bilik bujang</mark></p><p><mark>semalam</mark> ในที่นี้หมายถึง “ต่อหนึ่งคืน” (se + malam) และ <mark>daftar masuk</mark> (เช็กอิน) ไม่ปรากฏในบทสนทนา แต่จะได้ใช้ในกิจกรรมที่ 6</p>`,
+ vocab:[["hotel","โรงแรม"],["bilik","ห้อง"],["tempah","จอง"],["harga","ราคา"],["kosong","ว่าง"],["tetamu","แขกผู้เข้าพัก"],["daftar masuk","เช็กอิน"],["sarapan","อาหารเช้า"]],
+ cloze:["Tetamu: Selamat petang. Saya ingin [menempah] bilik.","Pekerja Hotel: Selamat petang. Untuk berapa [malam]?","Pekerja Hotel: Kamu mahu bilik single atau bilik [berkembar]?","Pekerja Hotel: Baik. Ada bilik [kosong]. Harganya RM150 semalam.","Tetamu: Adakah [sarapan] termasuk?","Pekerja Hotel: Baik. Selamat [menginap]."],
+ extra:["tambang","pedas"],
+ quiz:[
+ ["Tetamu mahu menginap berapa malam?",["Satu malam","Dua malam","Tiga malam","Empat malam"],1],
+ ["Bilik apakah yang tetamu mahu?",["Bilik single","Bilik berkembar","Bilik keluarga","Bilik mesyuarat"],1],
+ ["Berapakah harga bilik untuk satu malam?",["RM100","RM120","RM150","RM300"],2],
+ ["Adakah sarapan termasuk?",["Ya, sarapan termasuk","Tidak, sarapan tidak termasuk","Sarapan RM20","Tiada sarapan di hotel"],0],
+ ["Berapakah jumlah harga bilik untuk dua malam?",["RM150","RM200","RM250","RM300"],3]],
+ rpHint:"เลือกรายละเอียดการเข้าพัก ระบบจะสร้างใบจองห้องและบทสนทนาใหม่ให้จับคู่ฝึกบทบาทสมมติ (Tetamu – Pekerja Hotel)",
+ rpNote:"<b>ภารกิจท้าทาย:</b> ให้ผู้เรียนคำนวณ (ราคาห้อง + ค่าอาหารเช้า) × จำนวนคืน ก่อนดูใบจอง แล้วพูดประโยค “Jumlahnya RM… untuk … malam.”",
+ fields:[
+  ["time","Masa (ช่วงเวลา)",simple(["pagi","petang","malam"]),"malam"],
+  ["day","Hari daftar masuk (วันเช็กอิน)",simple(DAYS),"Jumaat"],
+  ["nights","Bilangan malam (จำนวนคืน)",range(5),"3"],
+  ["room","Jenis bilik (ประเภทห้อง)",[["bilik bujang","bilik bujang (RM100)"],["bilik berkembar","bilik berkembar (RM150)"],["bilik keluarga","bilik keluarga (RM220)"]],"bilik keluarga"],
+  ["bf","Sarapan (อาหารเช้า +RM20/คืน)",[["ya","mahu sarapan"],["tidak","tidak mahu sarapan"]],"ya"]],
+ build(v){const P={"bilik bujang":100,"bilik berkembar":150,"bilik keluarga":220};
+  const n=+v.nights,p=P[v.room],b=v.bf==="ya"?20:0,tot=(p+b)*n;
+  return{rows:[["Daftar masuk",`Hari ${v.day}`],["Bilik",v.room],["Sarapan",b?"termasuk (+RM20)":"tidak termasuk"],["Menginap",`${n} malam × RM${p+b}`]],tl:"Jumlah",tot,
+  lines:[["Tetamu",`Selamat ${v.time}. Saya ingin menempah bilik.`],["Pekerja Hotel",`Selamat ${v.time}. Bila kamu mahu daftar masuk?`],["Tetamu",`Hari ${v.day}.`],["Pekerja Hotel","Untuk berapa malam?"],["Tetamu",`Untuk ${NUM[n]} malam.`],["Pekerja Hotel","Kamu mahu bilik bujang, bilik berkembar atau bilik keluarga?"],["Tetamu",`Saya mahu ${v.room}.`],["Pekerja Hotel",`Baik. Ada bilik kosong. Harganya RM${p} semalam.`],["Tetamu","Adakah sarapan termasuk?"],["Pekerja Hotel","Tidak. Sarapan RM20 semalam."],["Tetamu",b?"Baik. Saya mahu sarapan juga.":"Tidak mengapa. Saya tidak mahu sarapan."],["Pekerja Hotel",`Jumlahnya RM${tot} untuk ${NUM[n]} malam.`],["Tetamu","Baik. Saya mahu tempah bilik itu."],["Pekerja Hotel","Baik. Selamat menginap."]]}}
+},
+
+teksi:{emoji:"🚕",name:"Perkhidmatan Teksi",th:"การใช้บริการแท็กซี่",hero:"#F7D44A",
+ route:"Ke Hotel Seri Malaysia",stub:["Tambang","RM20","lebih kurang"],staff:"Pemandu",
+ lines:[
+ ["Penumpang","Assalamualaikum, encik.","อัสสลามุอะลัยกุม คุณ (ผู้ชาย)"],
+ ["Pemandu","Waalaikumussalam. Ke mana?","วะอะลัยกุมุสสลาม ไปไหนครับ"],
+ ["Penumpang","Tolong hantar saya ke Hotel Seri Malaysia.","ช่วยไปส่งฉันที่โรงแรมเสรีมาเลเซียด้วย"],
+ ["Pemandu","Baik.","ได้ครับ"],
+ ["Penumpang","Berapa tambang?","ค่าโดยสารเท่าไร"],
+ ["Pemandu","Lebih kurang RM20.","ประมาณ 20 ริงกิต"],
+ ["Penumpang","Baik. Terus sahaja, kemudian belok kanan.","ตกลง ตรงไปเลย แล้วเลี้ยวขวา"],
+ ["Pemandu","Baik.","ได้ครับ"],
+ ["Penumpang","Tolong berhenti di sini.","ช่วยจอดตรงนี้ด้วย"],
+ ["Pemandu","Baik. Ini tempatnya.","ได้ครับ ถึงแล้วครับ"],
+ ["Penumpang","Terima kasih, encik.","ขอบคุณค่ะ"],
+ ["Pemandu","Sama-sama.","ด้วยความยินดีครับ"]],
+ note:`<p><b>สังเกต:</b> <mark>encik</mark> ใช้เรียกผู้ชายอย่างสุภาพ ถ้าคนขับเป็นผู้หญิงใช้ <mark>puan</mark> ส่วน <mark>tolong</mark> + คำกริยา ใช้ขอร้องอย่างสุภาพ เช่น tolong hantar, tolong berhenti</p><p><mark>destinasi</mark> และ <mark>kiri</mark> ไม่ปรากฏในบทสนทนา แต่จะได้ใช้ในกิจกรรมที่ 6</p>`,
+ vocab:[["teksi","แท็กซี่"],["pemandu","คนขับ"],["penumpang","ผู้โดยสาร"],["tambang","ค่าโดยสาร"],["destinasi","จุดหมายปลายทาง"],["kiri","ซ้าย"],["kanan","ขวา"],["terus","ตรงไป"],["belok","เลี้ยว"],["berhenti","หยุด / จอด"]],
+ cloze:["Pemandu: Waalaikumussalam. Ke [mana]?","Penumpang: Tolong [hantar] saya ke Hotel Seri Malaysia.","Penumpang: Berapa [tambang]?","Pemandu: [Lebih kurang] RM20.","Penumpang: Baik. [Terus] sahaja, kemudian [belok] kanan.","Penumpang: Tolong [berhenti] di sini."],
+ extra:["kiri","bil"],
+ quiz:[
+ ["Ke manakah penumpang mahu pergi?",["Stesen bas","Hotel Seri Malaysia","Lapangan terbang","Restoran"],1],
+ ["Berapakah tambang teksi?",["Lebih kurang RM12","Lebih kurang RM20","Tepat RM25","Percuma"],1],
+ ["Selepas terus, teksi perlu belok ke mana?",["Kiri","Kanan","Berpatah balik","Tidak belok"],1],
+ ["Siapakah yang memandu teksi?",["Penumpang","Pemandu","Pelayan","Tetamu"],1],
+ ["ประโยค “Tolong berhenti di sini.” หมายความว่าอย่างไร",["ช่วยเลี้ยวตรงนี้","ช่วยจอดตรงนี้","ช่วยขับเร็วขึ้น","ช่วยไปส่งที่โรงแรม"],1]],
+ rpHint:"เลือกจุดหมายปลายทางและเส้นทาง ระบบจะสร้างใบเสร็จค่าโดยสารและบทสนทนาใหม่ให้จับคู่ฝึกบทบาทสมมติ (Penumpang – Pemandu)",
+ rpNote:"<b>ภารกิจท้าทาย:</b> ให้ผู้เล่นบท Penumpang บอกทางโดยดูแผนที่จริงหรือแผนผังที่ครูวาดบนกระดาน แทนการเลือกจากเมนู",
+ fields:[
+  ["sir","Pemandu (คนขับ)",[["encik","lelaki: encik"],["puan","perempuan: puan"]],"puan"],
+  ["dest","Destinasi (จุดหมายปลายทาง)",simple(["Hotel Seri Malaysia","Stesen bas","Lapangan terbang","Pasar besar","Hospital"]),"Stesen bas"],
+  ["d1","Arah pertama (ทางแรก)",simple(["terus sahaja","belok kiri","belok kanan"]),"belok kiri"],
+  ["d2","Kemudian (จากนั้น)",simple(["terus sahaja","belok kiri","belok kanan"]),"terus sahaja"]],
+ build(v){const F={"Hotel Seri Malaysia":20,"Stesen bas":12,"Lapangan terbang":45,"Pasar besar":10,"Hospital":15};const f=F[v.dest];
+  return{rows:[["Destinasi",v.dest],["Arah",`${cap(v.d1)}, kemudian ${v.d2}`],["Pemandu",v.sir]],tl:"Tambang",tot:f,
+  lines:[["Penumpang",`Assalamualaikum, ${v.sir}.`],["Pemandu","Waalaikumussalam. Apakah destinasi kamu?"],["Penumpang",`Tolong hantar saya ke ${v.dest}.`],["Pemandu","Baik."],["Penumpang","Berapa tambang?"],["Pemandu",`Lebih kurang RM${f}.`],["Penumpang",`Baik. ${cap(v.d1)}, kemudian ${v.d2}.`],["Pemandu","Baik."],["Penumpang","Tolong berhenti di sini."],["Pemandu",`Baik. Ini ${v.dest}. Tambangnya RM${f}.`],["Penumpang",`Ini wangnya. Terima kasih, ${v.sir}.`],["Pemandu","Sama-sama."]]}}
+},
+
+restoran:{emoji:"🍽️",name:"Di Restoran",th:"ที่ร้านอาหาร",hero:"#F2B49C",
+ route:"Meja untuk dua orang",stub:["Bil","RM35","jumlah"],staff:"Pelayan",
+ lines:[
+ ["Pelayan","Selamat datang. Berapa orang?","ยินดีต้อนรับค่ะ กี่ท่านคะ"],
+ ["Pelanggan","Dua orang.","สองคน"],
+ ["Pelayan","Silakan duduk. Ini menu.","เชิญนั่งค่ะ นี่เมนูค่ะ"],
+ ["Pelanggan","Terima kasih. Saya mahu nasi ayam dan air kosong.","ขอบคุณ ฉันเอาข้าวมันไก่กับน้ำเปล่า"],
+ ["Pelayan","Baik. Ada lagi?","ได้ค่ะ รับอะไรเพิ่มไหมคะ"],
+ ["Pelanggan","Ya. Saya mahu satu nasi goreng. Jangan terlalu pedas.","ค่ะ ขอข้าวผัดหนึ่งจาน ไม่เผ็ดมากนะคะ"],
+ ["Pelayan","Baik.","ได้ค่ะ"],
+ ["","(Selepas makan)","(หลังรับประทานอาหาร)"],
+ ["Pelanggan","Boleh saya minta bil?","ขอบิลด้วยได้ไหมคะ"],
+ ["Pelayan","Boleh. Jumlahnya RM35.","ได้ค่ะ ทั้งหมด 35 ริงกิต"],
+ ["Pelanggan","Baik. Ini wangnya.","ได้ค่ะ นี่เงินค่ะ"],
+ ["Pelayan","Terima kasih.","ขอบคุณค่ะ"],
+ ["Pelanggan","Sama-sama.","ด้วยความยินดีค่ะ"]],
+ note:`<p><b>สังเกต:</b> <mark>air kosong</mark> แปลว่า น้ำเปล่า ส่วน <mark>kosong</mark> ในบทจองโรงแรม (bilik kosong) แปลว่า ว่าง เป็นคำเดียวกันที่ความหมายเปลี่ยนตามบริบท</p><p><mark>jangan terlalu</mark> + คำคุณศัพท์ ใช้บอกว่า “อย่า…เกินไป” ส่วน <mark>makanan</mark> และ <mark>minuman</mark> ไม่ปรากฏในบทสนทนา แต่จะได้ใช้ในกิจกรรมที่ 6</p>`,
+ vocab:[["restoran","ร้านอาหาร"],["menu","เมนู"],["pelanggan","ลูกค้า"],["pelayan","พนักงานเสิร์ฟ"],["makanan","อาหาร"],["minuman","เครื่องดื่ม"],["nasi","ข้าว"],["ayam","ไก่"],["pedas","เผ็ด"],["bil","บิล / ใบเสร็จ"]],
+ cloze:["Pelayan: Selamat datang. [Berapa] orang?","Pelayan: Silakan duduk. Ini [menu].","Pelanggan: Terima kasih. Saya mahu nasi ayam dan [air kosong].","Pelayan: Baik. Ada [lagi]?","Pelanggan: Ya. Saya mahu satu nasi goreng. Jangan terlalu [pedas].","Pelanggan: Boleh saya minta [bil]?","Pelayan: Boleh. [Jumlahnya] RM35."],
+ extra:["bilik","tambang"],
+ quiz:[
+ ["Berapa orang pelanggan datang ke restoran?",["Seorang","Dua orang","Tiga orang","Empat orang"],1],
+ ["Apakah minuman yang dipesan?",["Teh tarik","Kopi","Air kosong","Jus oren"],2],
+ ["Apakah makanan yang dipesan?",["Nasi ayam dan nasi goreng","Mee goreng dan nasi ayam","Roti canai sahaja","Nasi goreng sahaja"],0],
+ ["Pelanggan mahu nasi goreng yang bagaimana?",["Sangat pedas","Tidak terlalu pedas","Manis","Masin"],1],
+ ["Berapakah jumlah bil?",["RM25","RM30","RM35","RM53"],2]],
+ rpHint:"เลือกจำนวนคน อาหาร และเครื่องดื่ม ระบบจะสร้างบิลและบทสนทนาใหม่ให้จับคู่ฝึกบทบาทสมมติ (Pelanggan – Pelayan)",
+ rpNote:"<b>ภารกิจท้าทาย:</b> ให้ผู้เรียนออกแบบเมนูร้านของตนเอง (ภาษามลายูพร้อมราคา) แล้วสลับกันเป็นลูกค้าและพนักงานเสิร์ฟ",
+ fields:[
+  ["ppl","Bilangan orang (จำนวนคน)",range(5),"3"],
+  ["food","Makanan (อาหาร)",[["nasi ayam","nasi ayam (RM10)"],["nasi goreng","nasi goreng (RM9)"],["mee goreng","mee goreng (RM8)"],["roti canai","roti canai (RM4)"]],"mee goreng"],
+  ["fq","Bilangan makanan (จำนวน)",range(5),"3"],
+  ["spicy","Pedas (ความเผ็ด)",[["tidak","tidak pedas"],["kurang","jangan terlalu pedas"],["pedas","pedas"]],"kurang"],
+  ["drink","Minuman (เครื่องดื่ม)",[["air kosong","air kosong (RM1)"],["teh tarik","teh tarik (RM3)"],["kopi","kopi (RM3)"],["jus oren","jus oren (RM5)"]],"teh tarik"],
+  ["dq","Bilangan minuman (จำนวน)",range(5),"3"]],
+ build(v){const FP={"nasi ayam":10,"nasi goreng":9,"mee goreng":8,"roti canai":4},DP={"air kosong":1,"teh tarik":3,"kopi":3,"jus oren":5};
+  const n=+v.ppl,fq=+v.fq,dq=+v.dq,ft=FP[v.food]*fq,dt=DP[v.drink]*dq,tot=ft+dt;
+  const sp={tidak:"Tolong jangan letak cili.",kurang:"Jangan terlalu pedas.",pedas:"Saya mahu yang pedas."}[v.spicy];
+  return{rows:[["Makanan",`${fq} × ${v.food} = RM${ft}`],["Minuman",`${dq} × ${v.drink} = RM${dt}`],["Meja",`${n} orang`]],tl:"Jumlah",tot,
+  lines:[["Pelayan","Selamat datang. Berapa orang?"],["Pelanggan",n===1?"Seorang.":`${cap(NUM[n])} orang.`],["Pelayan","Silakan duduk. Ini menu. Apa makanan yang kamu mahu?"],["Pelanggan",`Saya mahu ${NUM[fq]} ${v.food}. ${sp}`],["Pelayan","Baik. Minuman pula?"],["Pelanggan",`${cap(NUM[dq])} ${v.drink}.`],["Pelayan","Baik. Ada lagi?"],["Pelanggan","Tidak ada. Terima kasih."],["","(Selepas makan)"],["Pelanggan","Boleh saya minta bil?"],["Pelayan",`Boleh. Jumlahnya RM${tot}.`],["Pelanggan","Baik. Ini wangnya."],["Pelayan","Terima kasih. Datang lagi!"]]}}
+}
+};
+
+let S=SC.tiket,curKey="tiket";
+const STORE="malay-dialogue-scores-v1";
+let ST={name:"",id:"",scores:{}};
+try{const x=JSON.parse(localStorage.getItem(STORE)||"null");if(x&&x.scores)ST=x}catch(e){}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(ST))}catch(e){}}
+const ACTS=["match","cloze","order","quiz"];
+function maxOf(k,a){const s=SC[k];return a==="match"?s.vocab.length:a==="cloze"?s.cloze.join("").split("[").length-1:a==="order"?s.lines.filter(l=>l[0]).length:s.quiz.length}
+function record(a,s,t){(ST.scores[curKey]=ST.scores[curKey]||{})[a]={s,t,at:Date.now()};save();renderSummary()}
+function level(p){return p>=80?"ดีมาก":p>=70?"ดี":p>=60?"พอใช้":"ควรปรับปรุง"}
+function summaryData(){let got=0,max=0,done=0,last=0;const rows=Object.keys(SC).map(k=>{let rs=0,rm=0;const cells=ACTS.map(a=>{const m=maxOf(k,a),r=(ST.scores[k]||{})[a];rm+=m;if(r){rs+=r.s;done++;last=Math.max(last,r.at);return{r,m}}return{r:null,m}});got+=rs;max+=rm;return{k,cells,rs,rm}});return{rows,got,max,done,last,pct:max?Math.round(got/max*100):0}}
+function renderSummary(){const d=summaryData(),all=Object.keys(SC).length*ACTS.length;
+ $("sumWho").innerHTML=`<dt>ชื่อ–สกุล</dt><dd>${ST.name?esc(ST.name):'<span class="warn">ยังไม่ได้กรอกชื่อ</span>'}</dd><dt>รหัสนักศึกษา</dt><dd>${ST.id?esc(ST.id):'<span class="warn">ยังไม่ได้กรอกรหัส</span>'}</dd><dt>สาขาวิชา</dt><dd>${ST.major?esc(ST.major):'<span class="warn">ยังไม่ได้กรอกสาขาวิชา</span>'}</dd><dt>ทำกิจกรรมแล้ว</dt><dd>${d.done}/${all} กิจกรรม</dd>${d.last?`<dt>บันทึกล่าสุด</dt><dd>${new Date(d.last).toLocaleString("th-TH",{dateStyle:"medium",timeStyle:"short"})}</dd>`:""}`;
+ $("sumBody").innerHTML=d.rows.map(r=>`<tr><td>${SC[r.k].emoji} ${SC[r.k].name}</td>${r.cells.map(c=>c.r?`<td class="${c.r.s===c.m?"full":""}">${c.r.s}/${c.m}</td>`:`<td class="none">–/${c.m}</td>`).join("")}<td><b>${r.rs}/${r.rm}</b></td></tr>`).join("");
+ const colTot=ACTS.map((a,i)=>{let s=0,m=0;d.rows.forEach(r=>{m+=r.cells[i].m;if(r.cells[i].r)s+=r.cells[i].r.s});return`${s}/${m}`});
+ $("sumFoot").innerHTML=`<tr><td>รวม</td>${colTot.map(x=>`<td>${x}</td>`).join("")}<td>${d.got}/${d.max}</td></tr>`;
+ $("sumTotal").innerHTML=`<b>${d.pct}%</b><span>คะแนนรวม ${d.got} จาก ${d.max}</span><span class="lvl">ระดับ: ${level(d.pct)}</span>${d.done<all?`<span class="warn">ยังทำไม่ครบ ${all-d.done} กิจกรรม</span>`:""}`;
+ Object.keys(SC).forEach(k=>{const n=ACTS.filter(a=>(ST.scores[k]||{})[a]).length,el=$("prog_"+k);el.textContent=n===ACTS.length?"ทำครบแล้ว":`ทำแล้ว ${n}/${ACTS.length} กิจกรรม`;el.className="prog"+(n===ACTS.length?" full":"")})}
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function summaryText(){const d=summaryData();const L=["ผลคะแนนกิจกรรมบทสนทนาภาษามลายู",`ชื่อ–สกุล: ${ST.name||"-"}`,`รหัสนักศึกษา: ${ST.id||"-"}`,`สาขาวิชา: ${ST.major||"-"}`,""];
+ d.rows.forEach(r=>{L.push(`${SC[r.k].name} (${SC[r.k].th}): ${r.rs}/${r.rm}`);L.push("  "+["คำศัพท์","เติมคำ","เรียงลำดับ","คำถาม"].map((n,i)=>`${n} ${r.cells[i].r?r.cells[i].r.s:"-"}/${r.cells[i].m}`).join(", "))});
+ L.push("",`คะแนนรวม: ${d.got}/${d.max} (${d.pct}%) ระดับ ${level(d.pct)}`,`ทำกิจกรรมแล้ว: ${d.done}/${Object.keys(SC).length*ACTS.length}`);if(d.last)L.push(`บันทึกล่าสุด: ${new Date(d.last).toLocaleString("th-TH")}`);return L.join("\n")}
+
+/* scenario switcher */
+Object.entries(SC).forEach(([k,s])=>{const b=document.createElement("button");b.innerHTML=`<span class="e">${s.emoji}</span><b>${s.name}</b><small>${s.th}</small><span class="prog" id="prog_${k}"></span>`;b.setAttribute("aria-pressed",k==="tiket");b.onclick=()=>{document.querySelectorAll(".scenes button").forEach(x=>x.setAttribute("aria-pressed",x===b));load(k)};$("scenes").appendChild(b)});
+
+/* activity tabs */
+["บทสนทนา","คำศัพท์","เติมคำ","เรียงลำดับ","คำถาม","บทบาทสมมติ"].forEach((t,i)=>{const b=document.createElement("button");b.role="tab";b.innerHTML=`<span class="n">${i+1}</span>${t}`;b.setAttribute("aria-selected",i===0);b.onclick=()=>{document.querySelectorAll("nav.steps button").forEach((x,k)=>x.setAttribute("aria-selected",k===i));document.querySelectorAll(".panel").forEach((p,k)=>p.classList.toggle("on",k===i))};$("steps").appendChild(b)});
+
+/* speech */
+let voice=null;
+function pickVoice(){try{const v=speechSynthesis.getVoices();voice=v.find(x=>/^ms/i.test(x.lang))||v.find(x=>/^id/i.test(x.lang))||null}catch(e){}}
+try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
+function speak(t){try{const u=new SpeechSynthesisUtterance(t);u.lang=voice?voice.lang:"ms-MY";if(voice)u.voice=voice;u.rate=.85;speechSynthesis.speak(u)}catch(e){}}
+function stop(){try{speechSynthesis.cancel()}catch(e){}}
+const whoCls=w=>w===S.staff?"who staff":"who";
+
+function renderLines(el,lines,withTh){el.innerHTML="";lines.forEach(([w,m,t])=>{const d=document.createElement("div");
+ if(!w){d.className="line stage";d.innerHTML=m+(withTh?`<div class="th">${t}</div>`:"");el.appendChild(d);return}
+ d.className="line";d.innerHTML=`<div class="${whoCls(w)}">${w}</div><div><div>${m}</div>${withTh?`<div class="th">${t}</div>`:""}</div>`;
+ if(withTh){const b=document.createElement("button");b.className="say";b.textContent="ฟัง";b.onclick=()=>{stop();speak(m)};d.appendChild(b)}
+ el.appendChild(d)})}
+
+/* 2 match */
+let selL=null,matched=0,wrongK=new Set();
+function buildMatch(){$("mL").innerHTML="";$("mR").innerHTML="";selL=null;matched=0;wrongK=new Set();$("mRes").textContent="";
+ shuffle(S.vocab).forEach(([m])=>{const b=document.createElement("button");b.className="card ms";b.textContent=m;b.dataset.k=m;b.onclick=()=>{if(b.classList.contains("done"))return;document.querySelectorAll("#mL .card").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");selL=b};$("mL").appendChild(b)});
+ shuffle(S.vocab).forEach(([m,t])=>{const b=document.createElement("button");b.className="card";b.textContent=t;b.dataset.k=m;b.onclick=()=>{if(!selL||b.classList.contains("done"))return;if(selL.dataset.k===b.dataset.k){selL.classList.remove("sel");selL.classList.add("done");b.classList.add("done");selL=null;matched++;if(matched===S.vocab.length){const t=S.vocab.length,sc=t-wrongK.size;record("match",sc,t);$("mRes").className="result good";$("mRes").textContent=`จับคู่ครบแล้ว ถูกตั้งแต่ครั้งแรก ${sc}/${t} คำ`+(sc===t?" Syabas!":"")}}else{wrongK.add(selL.dataset.k);b.classList.remove("wrong");void b.offsetWidth;b.classList.add("wrong")}};$("mR").appendChild(b)})}
+$("mReset").onclick=buildMatch;
+
+/* 3 cloze */
+function buildCloze(){$("cloze").innerHTML="";$("cRes").textContent="";
+ const ans=[];S.cloze.forEach(l=>l.replace(/\[([^\]]+)\]/g,(_,a)=>ans.push(a)));
+ const bank=[...new Set([...ans,...S.extra])].sort((a,b)=>a.localeCompare(b,"ms",{sensitivity:"base"}));
+ S.cloze.forEach(l=>{const p=document.createElement("p");const parts=l.split(/\[([^\]]+)\]/);parts.forEach((x,i)=>{if(i%2===0){if(x)p.append(x)}else{const s=document.createElement("select");s.dataset.a=x;s.setAttribute("aria-label","เลือกคำ");s.innerHTML=`<option value="">— pilih —</option>`+bank.map(w=>`<option>${w}</option>`).join("");p.appendChild(s)}});$("cloze").appendChild(p)})}
+$("cCheck").onclick=()=>{let n=0;const ss=[...document.querySelectorAll("#cloze select")];ss.forEach(s=>{const ok=s.value===s.dataset.a;s.className=ok?"ok":"no";if(ok)n++});record("cloze",n,ss.length);$("cRes").className="result "+(n===ss.length?"good":"bad");$("cRes").textContent=n===ss.length?`ถูกทั้งหมด ${n}/${ss.length} Bagus!`:`ถูก ${n}/${ss.length} ช่อง ลองแก้ช่องที่เป็นสีแดง`};
+$("cReset").onclick=()=>{document.querySelectorAll("#cloze select").forEach(s=>{s.value="";s.className=""});$("cRes").textContent=""};
+
+/* 4 order */
+let spoken=[],cur=[];
+const key=l=>l[0]+"|"+l[1];
+function renderOrder(){const ol=$("order");ol.innerHTML="";cur.forEach((idx,pos)=>{const l=spoken[idx];const li=document.createElement("li");li.innerHTML=`<span class="i">${pos+1}</span><span><b>${l[0]}:</b> ${l[1]}</span>`;const mv=document.createElement("div");mv.className="mv";const up=document.createElement("button");up.textContent="▲";up.setAttribute("aria-label","เลื่อนขึ้น");up.disabled=pos===0;up.onclick=()=>{[cur[pos-1],cur[pos]]=[cur[pos],cur[pos-1]];renderOrder()};const dn=document.createElement("button");dn.textContent="▼";dn.setAttribute("aria-label","เลื่อนลง");dn.disabled=pos===cur.length-1;dn.onclick=()=>{[cur[pos+1],cur[pos]]=[cur[pos],cur[pos+1]];renderOrder()};mv.append(up,dn);li.appendChild(mv);ol.appendChild(li)});$("oRes").textContent=""}
+function newOrder(){spoken=S.lines.filter(l=>l[0]);do{cur=shuffle([...spoken.keys()])}while(cur.every((v,i)=>key(spoken[v])===key(spoken[i])));renderOrder()}
+$("oShuffle").onclick=newOrder;
+$("oCheck").onclick=()=>{let n=0;[...$("order").children].forEach((li,i)=>{const ok=key(spoken[cur[i]])===key(spoken[i]);li.className=ok?"ok":"no";if(ok)n++});record("order",n,spoken.length);$("oRes").className="result "+(n===spoken.length?"good":"bad");$("oRes").textContent=n===spoken.length?"เรียงถูกต้องทั้งบทสนทนา Tahniah!":`อยู่ในตำแหน่งถูก ${n}/${spoken.length} ประโยค`};
+
+/* 5 quiz */
+function buildQuiz(){$("quiz").innerHTML="";$("qRes").textContent="";let score=0,answered=0;
+ S.quiz.forEach(([q,opts,a],qi)=>{const d=document.createElement("div");d.className="q";d.innerHTML=`<p>${qi+1}. ${q}</p>`;const g=document.createElement("div");g.className="opts";opts.forEach((o,oi)=>{const b=document.createElement("button");b.textContent=o;b.onclick=()=>{if(g.dataset.done)return;g.dataset.done=1;answered++;if(oi===a){b.className="ok";score++}else{b.className="no";g.children[a].className="ok"}if(answered===S.quiz.length){record("quiz",score,S.quiz.length);$("qRes").className="result "+(score===S.quiz.length?"good":"bad");$("qRes").textContent=`คะแนน ${score}/${S.quiz.length}`+(score===S.quiz.length?" Cemerlang!":"")}};g.appendChild(b)});d.appendChild(g);$("quiz").appendChild(d)})}
+$("qReset").onclick=buildQuiz;
+
+/* 6 role-play */
+function buildForm(){$("form").innerHTML="";S.fields.forEach(([id,label,opts,def])=>{const l=document.createElement("label");l.textContent=label;const s=document.createElement("select");s.id="f_"+id;s.innerHTML=opts.map(([v,t])=>`<option value="${v}">${t}</option>`).join("");s.value=def;s.onchange=buildRP;l.appendChild(s);$("form").appendChild(l)});buildRP()}
+function buildRP(){const v={};S.fields.forEach(([id])=>v[id]=$("f_"+id).value);const r=S.build(v);
+ $("mini").innerHTML=`<div><dl>${r.rows.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl></div><div class="s"><small>${r.tl}</small><b>RM${r.tot}</b></div>`;
+ renderLines($("script"),r.lines,false)}
+
+/* load scenario */
+function load(k){stop();S=SC[k];curKey=k;
+ document.documentElement.style.setProperty("--hero",S.hero);
+ $("hSub").textContent="สถานการณ์: "+S.th;$("hTitle").textContent=S.name;$("hRoute").textContent=S.route;
+ [$("hS1").textContent,$("hS2").textContent,$("hS3").textContent]=S.stub;
+ document.title=S.name+": กิจกรรมภาษามลายู";
+ renderLines($("dialogue"),S.lines,true);$("note1").innerHTML=S.note;
+ buildMatch();buildCloze();newOrder();buildQuiz();
+ $("rpHint").textContent=S.rpHint;$("note6").innerHTML=S.rpNote;buildForm()}
+
+$("toggleTh").onclick=e=>{const on=$("dialogue").classList.toggle("show-th");e.target.textContent=on?"ซ่อนคำแปล":"แสดงคำแปล"};
+$("playAll").onclick=()=>{stop();S.lines.filter(l=>l[0]).forEach(l=>speak(l[1]))};
+$("sName").value=ST.name||"";$("sId").value=ST.id||"";$("sMajor").value=ST.major||"";
+$("sName").oninput=e=>{ST.name=e.target.value.trim();save();renderSummary()};
+$("sId").oninput=e=>{ST.id=e.target.value.trim();save();renderSummary()};
+$("sMajor").oninput=e=>{ST.major=e.target.value.trim();save();renderSummary()};
+const missing=()=>!ST.name?"sName":!ST.id?"sId":!ST.major?"sMajor":null;
+function msg(t,ok){$("sumMsg").className="result "+(ok?"good":"bad");$("sumMsg").textContent=t}
+$("copyRes").onclick=()=>{if(missing()){msg("กรุณากรอกชื่อ–สกุล รหัสนักศึกษา และสาขาวิชาให้ครบก่อนคัดลอกผลคะแนน",false);$(missing()).focus();return}
+ const t=summaryText(),box=$("copyBox");const fb=()=>{box.hidden=false;box.value=t;box.focus();box.select();let ok=false;try{ok=document.execCommand("copy")}catch(e){}msg(ok?"คัดลอกแล้ว นำไปวางส่งครูได้เลย":"คัดลอกข้อความในกล่องด้านล่างด้วยตนเอง (กดค้างแล้วเลือกคัดลอก)",ok)};
+ try{navigator.clipboard.writeText(t).then(()=>{box.hidden=true;msg("คัดลอกแล้ว นำไปวางส่งครูได้เลย",true)},fb)}catch(e){fb()}};
+$("printRes").onclick=()=>{if(missing()){msg("กรุณากรอกชื่อ–สกุล รหัสนักศึกษา และสาขาวิชาให้ครบก่อนพิมพ์ผลคะแนน",false);$(missing()).focus();return}try{window.print()}catch(e){msg("เบราว์เซอร์นี้พิมพ์ไม่ได้ ใช้ปุ่มคัดลอกผลคะแนนหรือถ่ายภาพหน้าจอแทน",false)}};
+let clearArm=null;
+$("clearRes").onclick=e=>{const b=e.currentTarget;if(!clearArm){b.textContent="กดอีกครั้งเพื่อยืนยันการล้าง";clearArm=setTimeout(()=>{b.textContent="ล้างคะแนนทั้งหมด";clearArm=null},4000);return}
+ clearTimeout(clearArm);clearArm=null;b.textContent="ล้างคะแนนทั้งหมด";ST.scores={};save();load(curKey);renderSummary();msg("ล้างคะแนนทั้งหมดแล้ว",true)};
+load("tiket");renderSummary();
+</script>
+</body>
+</html>
